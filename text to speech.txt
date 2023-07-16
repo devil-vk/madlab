@@ -1,0 +1,40 @@
+package com.example.texttospeech_050
+
+import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.util.Log
+import android.widget.Button
+import android.widget.EditText
+import java.util.*
+
+class MainActivity : AppCompatActivity(),TextToSpeech.OnInitListener {
+
+    private lateinit var textToSpeech: TextToSpeech
+    private lateinit var speakbutton: Button
+    private lateinit var textInput : EditText
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        speakbutton=findViewById(R.id.button)
+        textInput=findViewById(R.id.texttospeak)
+        textToSpeech= TextToSpeech(this,this)
+        speakbutton.setOnClickListener{converttospeech()}
+
+    }
+
+    override fun onInit(status: Int) {
+        if(status == TextToSpeech.SUCCESS){
+            val result = textToSpeech.setLanguage(Locale.US)
+        }
+        else{
+            Log.e("TTS","Failed")
+        }
+    }
+    private fun converttospeech(){
+        val text = textInput.text.toString()
+        textToSpeech.speak(text,TextToSpeech.QUEUE_FLUSH,null,"")
+    }
+}

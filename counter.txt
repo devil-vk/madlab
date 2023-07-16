@@ -1,0 +1,54 @@
+package com.example.myapplication
+
+import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
+import android.os.CountDownTimer
+import android.widget.Button
+import android.widget.TextView
+
+class MainActivity : AppCompatActivity() {
+
+     lateinit var countervalue:TextView
+     lateinit var startbutton :Button
+     lateinit var stopbutton:Button
+     lateinit var resetbutton:Button
+     private var count :Int=0
+     val timer = MyCounter(1000000,1000)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        countervalue=findViewById(R.id.counter_value)
+        startbutton=findViewById(R.id.start_button)
+        stopbutton=findViewById(R.id.stop_button)
+        resetbutton=findViewById(R.id.reset_button)
+
+        startbutton.setOnClickListener{
+            timer.start()
+            startbutton.isEnabled=false
+        }
+        stopbutton.setOnClickListener {
+            timer.cancel()
+            startbutton.isEnabled=true
+        }
+        resetbutton.setOnClickListener {
+            timer.cancel()
+            startbutton.isEnabled=true
+            count=0
+            countervalue.text=(count).toString()
+        }
+
+    }
+    inner class MyCounter(x:Long,y:Long): CountDownTimer(x,y)
+    {
+        override fun onTick(p0: Long) {
+            count++
+            countervalue.text=(count).toString()
+        }
+
+        override fun onFinish() {
+            countervalue.text="Finished"
+        }
+    }
+}
